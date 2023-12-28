@@ -108,7 +108,7 @@ while True:
         time.sleep(1)
         head.goto(0, 0)
         head.direction = "Stop"
-        colors = random.choice(["red", "green", "black"])
+        colors = random.choice(["red", "green", "black", "blue"])
         shapes = random.choice(["square", "circle"])
         food.shape(shapes)
         food.color(colors)
