@@ -1,1 +1,1 @@
-here is the part of me that codes every day 
+here is the part of me that coding every day 
