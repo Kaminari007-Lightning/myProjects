@@ -6,6 +6,7 @@
 using namespace std;
 
 void self_exit();
+void addStudent();
 
 
 int main() {
@@ -33,13 +34,30 @@ int main() {
 
     switch (choice)
     {
-    case 6:
-        self_exit();
-        break;
-    
-    default:
-        break;
+        case 1:
+            addStudent();
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            self_exit();
+            break;
+        default:
+            break;
     }
+}
+
+void addStudent()
+{
+    system("cls");
+    system("color 0A");
+    Sleep(300);
 }
 
 void self_exit()
