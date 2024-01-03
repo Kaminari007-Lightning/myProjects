@@ -4,6 +4,22 @@
 #include <fstream>
 #include <unistd.h>
 using namespace std;
+/* Student Council Archive: 
+Console app that can : 
+-Add student's 
+-Edit existing Student 
+-Delete student's 
+-Read student 
+-Search for students
+---------------------------------------------------
+Main functions: Save the students to a text or other format file so you dont Loss data when
+the app closed Can search for both names or last names The app won't exit unless the user 
+chooses to The app will receive the students name and last name and Three seamstress marks 
+and will automatically count the year mark and set the student to pass or failed Set setting
+function that can delete all the data if the user want or set password to access the app
+----------------------------------------------------
+Things that you may add: " give extra credit" Order the students when read by user choice for 
+by name last name or marks */
 
 void self_exit();
 void addStudent();
