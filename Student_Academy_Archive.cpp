@@ -16,6 +16,7 @@ Things that you may add: " give extra credit" Order the students when read by us
 by name last name or marks */
 #include <iostream>
 #include <conio.h>
+#include <iomanip>
 #include <windows.h>
 #include <fstream>
 #include <unistd.h>
@@ -23,20 +24,10 @@ using namespace std;
 class student{
     public:
     char name[80];
-    char id[80];
-    int key;
+    string sex;
+    int id;
+    int lvl;
     float sem1,sem2,sem3,sum,reselt;
-    students(char x, char y, int z, float sem1, float sem2, float sem3, float sum, float reselt){
-        name[80] = x;
-        id[80] = y;
-        key = z;
-        sem1 = sem1;
-        sem2 = sem2;
-        sem3 = sem3;
-        sum = sum;
-        reselt = reselt;
-        return 0;
-    }
     void sumCalcu(){
         sum=sem1+sem2+sem3;
         reselt=(sum/3);
@@ -54,25 +45,25 @@ void self_exit();
 
 int main() {
     // intro();
-    short int choice ;
+    short int choice; 
     system("cls");
     system("color 0A");
     Sleep(300);
     cout << "\n\n\n\t====================Student Academy Archive====================";
     Sleep(300);
-    cout << "\n\n\n\t1. add new student";
+    cout << "\n\n\n\t1. Add new student";
     Sleep(300);
-    cout << "\n\n\t2. show all students";
+    cout << "\n\n\t2. Show all students";
     Sleep(300);
-    cout << "\n\n\t3. show single students";
+    cout << "\n\n\t3. Show single students";
     Sleep(300);
-    cout << "\n\n\t4. edit student information";
+    cout << "\n\n\t4. Edit student information";
     Sleep(300);
-    cout << "\n\n\t5. the results of the final";
+    cout << "\n\n\t5. The results of the final";
     Sleep(300);
-    cout << "\n\n\t6. delete student information";
+    cout << "\n\n\t6. Delete student information";
     Sleep(300);
-    cout << "\n\n\t7. exit";
+    cout << "\n\n\t7. Exit";
     Sleep(300);
     cout << "\n\n\t > ";
     Sleep(300);
@@ -88,25 +79,25 @@ int main() {
             break;
         case 3:
             int t;
-            cout<<"\n\tENTER YOUR KEY NUMBER : ";
+            cout<<"\n\tEnter Your ID Number To Be Search : #";
             cin>>t;
             singleStudent(t);
             break;
         case 4:
             int g;
-            cout<<"\n\tENTER YOUR KEY NUMBER : ";
+            cout<<"\n\tEnter Your ID Number To Be Search : #";
             cin>>g;
             updateInfo(g);
             break;
         case 5:
             int j;
-            cout<<"\n\tENTER YOUR KEY NUMBER : ";
+            cout<<"\n\tEnter Your ID Number To Be Search : #";
             cin>>j;
             result(j);
             break;
         case 6:
             int h;
-            cout<<"\n\tENTER YOUR KEY NUMBER : ";
+            cout<<"\n\tEnter Your ID Number To Be Search : #";
             cin>>h;
             deleteStudent(h);
             break;
@@ -114,6 +105,9 @@ int main() {
             self_exit();
             break;
         default:
+            cout<<"\n\tERROR";
+            sleep(1);
+            main();
             break;
     }
 }
@@ -163,24 +157,29 @@ void addStudent()
         cin.get();
     }
     cout<<"\n\n";
-    cout<<"\t\t========== CREATE A NEW INFO ===========\n\n";
-    cout<<"\n\tENTER YOUR FULL NAME : ";
+    cout<<"\t=============== CREATE A NEW INFO ================\n";
+    cout<<"\n\tEnter Your ID Number : #";
+    cin>>him.id;
+    if(him.id > 9999){cout<<"\n\tChoose A Number Dont Surpass \"9999\" ";sleep(5);addStudent();}
+    cout<<"\n\tEnter Your Full Name : ";
     cin.ignore();
     cin.getline(him.name,80);
-    cout<<"\n\tENTER YOUR ID NUMBER : 0/ ";
-    cin.ignore();
-    cin.get(him.id,80);
-    cout<<"\n\tENTER YOUR KEY NUMBER : ";
-    cin>>him.key;
-    cout<<"\n\tENTER YOUR SEMASTER 1 MARK : ";
+    cout<<"\n\tEnter Your Sex : ";
+    cin>>him.sex;
+    if(him.sex == "male" || him.sex == "female"){}else{cout<<"\n\tPlease Be Realistic Whoever You Are";sleep(5);addStudent();}
+    cout<<"\n\tEnter Your Year Level : ";
+    cin>>him.lvl;
+    if(him.lvl > 5){cout<<"\n\twhere Are You Going To. There 5 Levels In University ";sleep(5);addStudent();}
+    cout<<"\n\tEnter Your Semaster 1 Mark : ";
     cin>>him.sem1;
-    cout<<"\n\tENTER YOUR SEMASTER 2 MARK : ";
+    cout<<"\n\tEnter Your Semaster 2 MARK : ";
     cin>>him.sem2;
-    cout<<"\n\tENTER YOUR SEMASTER 3 MARK : ";
+    cout<<"\n\tEnter Your Semaster 3 MARK : ";
     cin>>him.sem3;
     him.sumCalcu();
     outfile.write(reinterpret_cast<char *> (&him), sizeof(student));
     outfile.close();
+    cout<<"\n\t=================================================="<<endl;
     cout<<endl;
     cout<<"\t\t\t\tTHE FILE IS SUCCESSFULLY SAVED"<<endl;
     cout<<endl;
@@ -209,12 +208,13 @@ void showAll()
      cout<<"\n";
     while(infile.read(reinterpret_cast<char*>(&him),sizeof(student)))
     {
-        cout<<"\tSTUDENT FULL NAME : "<<him.name<<endl;
-        cout<<"\tSTUDENT ID NUMBER :0/ "<<him.id<<endl;
-        cout<<"\tSTUDENT KEY NUMBER : "<<him.key<<endl;
-        cout<<"\tSEMASTER 1 MARK : "<<him.sem1<<endl;
-        cout<<"\tSEMASTER 2 MARK : "<<him.sem2<<endl;
-        cout<<"\tSEMASTER 3 MARK : "<<him.sem3<<endl;
+        cout<<"\tStudent ID Number : #"<<him.id<<endl;
+        cout<<"\tStudent Full Name : "<<him.name<<endl;
+        cout<<"\tStudent Sex : "<<him.sex<<endl;
+        cout<<"\tStudent Year Level : "<<him.lvl<<endl;
+        cout<<"\tSemaster 1 Mark : "<<him.sem1<<endl;
+        cout<<"\tSemaster 2 Mark : "<<him.sem2<<endl;
+        cout<<"\tSemaster 3 Mark : "<<him.sem3<<endl;
         cout<<"\n";
         cout<<"=================================================================================="<<endl;
         cout<<"\n";
@@ -245,15 +245,16 @@ void singleStudent(int s)
     cout<<"=========================VIEW A SINGLE STUDENT INFORMATION========================\n";
     while(infile.read(reinterpret_cast<char*>(&him),sizeof(student)))
     {
-        if(him.key == s)
+        if(him.id == s)
         {
         cout<<"\n";
-        cout<<"\tSTUDENT FULL NAME : "<<him.name<<endl;
-        cout<<"\tSTUDENT ID NUMBER :0/ "<<him.id<<endl;
-        cout<<"\tSTUDENT KEY NUMBER :"<<him.key<<endl;
-        cout<<"\tSEMASTER 1 MARK : "<<him.sem1<<endl;
-        cout<<"\tSEMASTER 2 MARK : "<<him.sem2<<endl;
-        cout<<"\tSEMASTER 3 MARK : "<<him.sem3<<endl;
+        cout<<"\tStudent ID Number : #"<<him.id<<endl;
+        cout<<"\tStudent Full Name : "<<him.name<<endl;
+        cout<<"\tStudent Sex : "<<him.sex<<endl;
+        cout<<"\tStudent Year Level : "<<him.lvl<<endl;
+        cout<<"\tSemaster 1 Mark : "<<him.sem1<<endl;
+        cout<<"\tSemaster 2 Mark : "<<him.sem2<<endl;
+        cout<<"\tSemaster 3 Mark : "<<him.sem3<<endl;
         cout<<"\n";
         cout<<"=================================================================================="<<endl;
         equality=true;
@@ -283,41 +284,71 @@ void updateInfo(int x)
         cin.get();
     }
      bool checker=false;
-     cout<<"\t\t\t============== MODIFY A REPORT CARD ==============\n\n";
+     cout<<"\t\t============== MODIFY A STUDENT INFORMATION ==============\n\n";
      while(!infile.eof() && checker==false)
      {
      infile.read(reinterpret_cast<char*>(&him),sizeof(student));
      {
-         if(him.key==x)
-         {
-        cout<<"\t\t\t\tSTUDENT FULL NAME : "<<him.name<<endl;
-        cout<<"\t\t\t\tSTUDENT ID NUMBER :0/ "<<him.id<<endl;
-        cout<<"\t\t\t\tSTUDENT Key NUMBER :"<<him.key<<endl;
-        cout<<"\t\t\t\tSEMASTER 1 MARK : "<<him.sem1<<endl;
-        cout<<"\t\t\t\tSEMASTER 2 MARK : "<<him.sem2<<endl;
-        cout<<"\t\t\t\tSEMASTER 3 MARK : "<<him.sem3<<endl<<endl<<endl;
+        if(him.id==x)
+        {
+            cout<<"\t\t\t\tStudent ID Number : #"<<him.id<<endl;
+            cout<<"\t\t\t\tStudent Full Name : "<<him.name<<endl;
+            cout<<"\t\t\t\tStudent Sex : "<<him.sex<<endl;
+            cout<<"\t\t\t\tStudent Year Level : "<<him.lvl<<endl;
+            cout<<"\t\t\t\tSemaster 1 Mark : "<<him.sem1<<endl;
+            cout<<"\t\t\t\tSemaster 2 Mark : "<<him.sem2<<endl;
+            cout<<"\t\t\t\tSemaster 3 Mark : "<<him.sem3<<endl<<endl<<endl;
         cout<<"\tENTER THE NEW INFORMATION"<<endl;
         cout<<"============================================="<<endl;
-        cout<<"ENTER YOUR FULL NAME :";
-    cin.ignore();
-    cin.getline(him.name,80);
-    cout<<"ENTER YOUR ID NUMBER : 0/";
-    cin.ignore();
-    cin.get(him.id,80);
-    cout<<"ENTER YOUR KEY NUMBER :";
-    cin>>him.key;
-    cout<<"ENTER YOUR SEMASTER 1 MARK : ";
-    cin>>him.sem1;
-    cout<<"ENTER YOUR SEMASTER 2 MARK : ";
-    cin>>him.sem2;
-    cout<<"ENTER YOUR SEMASTER 3 MARK : ";
-    cin>>him.sem3;
-    him.sumCalcu();
+        cout<<"What Do You Want To Change:\n1. Your ID\n2. Your Name\n3. Your Sex\n4. Your Year level\n5. Your Semaster 1 Mark\n6. Your Semaster 2 Mark\n7. Your Semaster 3 Mark";
+        short int choice2;
+        cout<<"\n\n> ";
+        cin>>choice2;
+        switch (choice2)
+        {
+        case 1:
+            cout<<"Enter Your New ID Number : #";
+            cin>>him.id; 
+            if(him.id > 9999){cout<<"\n\tChoose A Number Dont Surpass \"9999\" ";sleep(5);addStudent();}
+            break;
+        case 2:
+            cout<<"Enter Your Full Name : ";
+            cin.ignore();
+            cin.getline(him.name,80);
+            break;
+        case 3:
+            cout<<"Enter Your Sex : ";
+            cin>>him.sex;  
+            if(him.sex != "male" || him.sex != "female"){cout<<"\n\tPlease Be Realistic Whoever You Are";sleep(5);addStudent();}  
+            break;
+        case 4:
+            cout<<"Enter Your Year Level : ";
+            cin>>him.lvl;
+            if(him.lvl > 5){cout<<"\n\twhere Are You Going To. There 5 Levels In University ";sleep(5);addStudent();}
+            break;
+        case 5:
+            cout<<"Enter Your Semaster 1 Mark : ";
+            cin>>him.sem1;
+            break;
+        case 6:
+            cout<<"Enter Your Semaster 2 Mark : ";
+            cin>>him.sem2;
+            break;
+        case 7:    
+            cout<<"Enter Your Semaster 3 Mark : ";
+            cin>>him.sem3;
+        default:
+            cout<<"\n\tERROR";
+            sleep(1);
+            void updateInfo();
+            break;
+        }
+    him.sumCalcu(); 
     int pos=(-1)*static_cast<int>(sizeof(student));
     infile.seekp(pos,ios::cur);
     infile.write(reinterpret_cast<char *> (&him), sizeof(student));
     cout<<"==================================================="<<endl<<endl;
-    cout<<"\t\t\t\tTHE FILE IS SUCCESSFULLY updated"<<endl;
+    cout<<"\t\t\t\tThe File Is Successfully Updated"<<endl;
     checker=true;
          }
      }
@@ -348,12 +379,14 @@ void result(int y)
     cout<<"\t===========VIEW A SINGLE STUDENT RESULT==========\n\n";
     while(infile.read(reinterpret_cast<char*>(&him),sizeof(student)))
     {
-        if(him.key==y)
+        if(him.id==y)
         {
         cout<<"\t\tSTUDENT FULL NAME : "<<him.name<<endl;
-        cout<<"\t\tSTUDENT ID NUMBER : 0/"<<him.id<<endl<<endl;
+        cout<<"\t\tSTUDENT ID NUMBER : #"<<him.id<<endl;
+        cout<<"\t\tStudent Sex : "<<him.sex<<endl;
+        cout<<"\t\tStudent Year Level : "<<him.lvl<<endl<<endl;
         cout<<"\t\tSUM : "<<him.sum<<endl<<endl;
-        cout<<"\t\tFINAL RESELT : "<<him.reselt<<endl<<endl;
+        cout<<"\t\tFINAL RESELT : "<<fixed<<setprecision(2)<<him.reselt<<endl<<endl;
         if(him.reselt <= 10){
             cout<<"\t\tYOU HAVE FAILED"<<endl<<endl;
         }else if(him.reselt < 20){
@@ -366,7 +399,6 @@ void result(int y)
             cin.get();
             main();
         }
-        
         cout<<"\t=================================================="<<endl;
         eq=true;
         }
@@ -399,9 +431,9 @@ void deleteStudent(int w)
     cout<<"\t\t\t\t===========DELETE A STUDENT INFO==========\n\n";
     while(infile.read(reinterpret_cast<char*>(&him),sizeof(student)))
     {
-        if(him.key!=w)
+        if(him.id!=w)
         {
-             outfile.write(reinterpret_cast<char*>(&him),sizeof(student));
+            outfile.write(reinterpret_cast<char*>(&him),sizeof(student));
         }
     }
     infile.close();
