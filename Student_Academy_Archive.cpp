@@ -1,19 +1,3 @@
-/* Student Council Archive: 
-Console app that can : 
--Add student's 
--Edit existing Student 
--Delete student's 
--Read student 
--Search for students
----------------------------------------------------
-Main functions: Save the students to a text or other format file so you dont Loss data when
-the app closed Can search for both names or last names The app won't exit unless the user 
-chooses to The app will receive the students name and last name and Three seamstress marks 
-and will automatically count the year mark and set the student to pass or failed Set setting
-function that can delete all the data if the user want or set password to access the app
-----------------------------------------------------
-Things that you may add: " give extra credit" Order the students when read by user choice for 
-by name last name or marks */
 #include <iostream>
 #include <conio.h>
 #include <iomanip>
@@ -28,12 +12,12 @@ class student{
     int id;
     int lvl;
     float sem1,sem2,sem3,sum,reselt;
+    int count = 0;
     void sumCalcu(){
         sum=sem1+sem2+sem3;
         reselt=(sum/3);
     }
 };
-
 void intro();
 void addStudent();
 void showAll();
@@ -42,9 +26,47 @@ void updateInfo(int);
 void result(int);
 void deleteStudent(int);
 void self_exit();
-
+void MainMenu();
 int main() {
-    // intro();
+    intro();
+    MainMenu();
+}
+void intro()
+{
+    system("color 0C");
+    cout << "\n\n\n";
+    Sleep(300);
+    cout << "\t\t\t * * *  **** *      ****  ***   ***   ****   " << endl;
+    Sleep(300);
+    system("color 0a");
+    cout << "\t\t\t * * * *     *     *     *   * * * * *        "<< endl;
+    Sleep(300);
+    system("color 0b");
+    cout << "\t\t\t * * * ***** *     *     *   * * * * *****    " << endl;
+    Sleep(300);
+    system("color 0e");
+    cout << "\t\t\t * * * *     *     *     *   * * * * *         " << endl;
+    Sleep(300);
+    system("color 05");
+    cout << "\t\t\t  ***   **** *****  ****  ***  * * *  ****     " << endl;
+    Sleep(300);
+    system("color 0C");
+    cout<<endl;
+    cout<<"\t\t\t============================================="<<endl;
+    Sleep(300);
+    system("color 0b");
+    cout<<"\t\t\t       THIS IS STUDENT ACADEMY ARCHIVE"<<endl;
+    Sleep(300);
+    system("color 0e");
+    cout<<"\t\t\t============================================="<<endl;
+    Sleep(300);
+    system("color 0A");
+    cout<<"\npress any key to continue...";
+    cin.ignore();
+    cin.get();
+}
+
+void MainMenu(){
     short int choice; 
     system("cls");
     system("color 0A");
@@ -68,7 +90,6 @@ int main() {
     cout << "\n\n\t > ";
     Sleep(300);
     cin >> choice;
-
     switch (choice)
     {
         case 1:
@@ -112,38 +133,6 @@ int main() {
     }
 }
 
-/* void intro()
-{
-    system("color 0C");
-    cout << "\n\n\n";
-    Sleep(500);
-    cout << "\t\t\t\t * * *  **** *      ****  ***   ***   ****   " << endl;
-    Sleep(500);
-    system("color 0a");
-    cout << "\t\t\t\t * * * *     *     *     *   * * * * *        "<< endl;
-    Sleep(500);
-    system("color 0b");
-    cout << "\t\t\t\t * * * ***** *     *     *   * * * * *****    " << endl;
-    Sleep(500);
-    system("color 0e");
-    cout << "\t\t\t\t * * * *     *     *     *   * * * * *         " << endl;
-    Sleep(500);
-    system("color 05");
-    cout << "\t\t\t\t  ***   **** *****  ****  ***  * * *  ****     " << endl;
-    Sleep(500);
-    system("color 0C");
-    cout<<endl;
-    cout<<"\t\t\t\t============================================="<<endl;
-    Sleep(500);
-    cout<<"\t\t\t\t       THIS IS STUDENT ACADEMY ARCHIVE"<<endl;
-    Sleep(500);
-    cout<<"\t\t\t\t============================================="<<endl;
-    Sleep(500);
-    cout<<"\npress any key to continue...";
-    cin.ignore();
-    cin.get();
-} */
-
 void addStudent()
 {
     system("cls");
@@ -161,12 +150,13 @@ void addStudent()
     cout<<"\n\tEnter Your ID Number : #";
     cin>>him.id;
     if(him.id > 9999){cout<<"\n\tChoose A Number Dont Surpass \"9999\" ";sleep(5);addStudent();}
+    cout<<"conter: "<<him.count;
     cout<<"\n\tEnter Your Full Name : ";
     cin.ignore();
     cin.getline(him.name,80);
     cout<<"\n\tEnter Your Sex : ";
     cin>>him.sex;
-    if(him.sex == "male" || him.sex == "female"){}else{cout<<"\n\tPlease Be Realistic Whoever You Are";sleep(5);addStudent();}
+    if(him.sex == "male"){}else if(him.sex == "female"){}else{cout<<"\n\tPlease Be Realistic Whoever You Are";sleep(5);addStudent();} 
     cout<<"\n\tEnter Your Year Level : ";
     cin>>him.lvl;
     if(him.lvl > 5){cout<<"\n\twhere Are You Going To. There 5 Levels In University ";sleep(5);addStudent();}
@@ -181,12 +171,12 @@ void addStudent()
     outfile.close();
     cout<<"\n\t=================================================="<<endl;
     cout<<endl;
-    cout<<"\t\t\t\tTHE FILE IS SUCCESSFULLY SAVED"<<endl;
+    cout<<"\t\tTHE FILE IS SUCCESSFULLY SAVED"<<endl;
     cout<<endl;
     cout<<"press any key to continue...";
     cin.ignore();
     cin.get();
-    main();
+    MainMenu();
 }
 
 void showAll()
@@ -226,7 +216,7 @@ void showAll()
     cout<<"press any key to continue....";
     cin.ignore();
     cin.get();
-    main();
+    MainMenu();
 }
 
 void singleStudent(int s)
@@ -268,7 +258,7 @@ void singleStudent(int s)
             cout<<"press any key to continue...";
             cin.ignore();
             cin.get();
-        main();    
+        MainMenu();   
 }
 
 void updateInfo(int x)
@@ -319,7 +309,7 @@ void updateInfo(int x)
         case 3:
             cout<<"Enter Your Sex : ";
             cin>>him.sex;  
-            if(him.sex != "male" || him.sex != "female"){cout<<"\n\tPlease Be Realistic Whoever You Are";sleep(5);addStudent();}  
+            if(him.sex == "male"){}else if(him.sex == "female"){}else{cout<<"\n\tPlease Be Realistic Whoever You Are";sleep(5);addStudent();} 
             break;
         case 4:
             cout<<"Enter Your Year Level : ";
@@ -348,7 +338,7 @@ void updateInfo(int x)
     infile.seekp(pos,ios::cur);
     infile.write(reinterpret_cast<char *> (&him), sizeof(student));
     cout<<"==================================================="<<endl<<endl;
-    cout<<"\t\t\t\tThe File Is Successfully Updated"<<endl;
+    cout<<"\t\tThe File Is Successfully Updated"<<endl;
     checker=true;
          }
      }
@@ -360,7 +350,7 @@ void updateInfo(int x)
             cout<<"press any key to continue...";
             cin.ignore();
             cin.get();
-        main();    
+        MainMenu();   
   }
 
 void result(int y)
@@ -397,7 +387,7 @@ void result(int y)
             cout<<"press any key to continue...";
             cin.ignore();
             cin.get();
-            main();
+            MainMenu();
         }
         cout<<"\t=================================================="<<endl;
         eq=true;
@@ -410,7 +400,7 @@ void result(int y)
             cout<<"press any key to continue...";
             cin.ignore();
             cin.get();
-        main();    
+        MainMenu();   
 }
 
 void deleteStudent(int w)
@@ -445,7 +435,7 @@ void deleteStudent(int w)
     cout<<"press any key to continue...";
     cin.ignore();
     cin.get();
-    main();
+    MainMenu();
 }
 
 void self_exit()
