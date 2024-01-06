@@ -20,12 +20,27 @@ by name last name or marks */
 #include <fstream>
 #include <unistd.h>
 using namespace std;
-struct student
-{
-char name[80];
-char id[80];
-int key;
-float sem1,sem2,sem3,sum,reselt;
+class student{
+    public:
+    char name[80];
+    char id[80];
+    int key;
+    float sem1,sem2,sem3,sum,reselt;
+    students(char x, char y, int z, float sem1, float sem2, float sem3, float sum, float reselt){
+        name[80] = x;
+        id[80] = y;
+        key = z;
+        sem1 = sem1;
+        sem2 = sem2;
+        sem3 = sem3;
+        sum = sum;
+        reselt = reselt;
+        return 0;
+    }
+    void sumCalcu(){
+        sum=sem1+sem2+sem3;
+        reselt=(sum/3);
+    }
 };
 
 void intro();
@@ -163,8 +178,7 @@ void addStudent()
     cin>>him.sem2;
     cout<<"\n\tENTER YOUR SEMASTER 3 MARK : ";
     cin>>him.sem3;
-    him.sum=him.sem1+him.sem2+him.sem3;
-    him.reselt=(him.sum/3);
+    him.sumCalcu();
     outfile.write(reinterpret_cast<char *> (&him), sizeof(student));
     outfile.close();
     cout<<endl;
@@ -197,12 +211,10 @@ void showAll()
     {
         cout<<"\tSTUDENT FULL NAME : "<<him.name<<endl;
         cout<<"\tSTUDENT ID NUMBER :0/ "<<him.id<<endl;
-        cout<<"\tSTUDENT Key NUMBER : "<<him.key<<endl;
+        cout<<"\tSTUDENT KEY NUMBER : "<<him.key<<endl;
         cout<<"\tSEMASTER 1 MARK : "<<him.sem1<<endl;
         cout<<"\tSEMASTER 2 MARK : "<<him.sem2<<endl;
         cout<<"\tSEMASTER 3 MARK : "<<him.sem3<<endl;
-        cout<<"\tSUM : "<<him.sum<<endl<<endl;
-        cout<<"\tFINAL RESELT : "<<him.reselt<<endl;
         cout<<"\n";
         cout<<"=================================================================================="<<endl;
         cout<<"\n";
@@ -210,7 +222,7 @@ void showAll()
     }
     infile.close();
     if(check==false)
-    cout<<"\t\t\t\tNO RECORD FOUND..."<<endl<<endl;
+    cout<<"\t\t\t\tNO INFORMATION FOUND..."<<endl<<endl;
     cout<<"press any key to continue....";
     cin.ignore();
     cin.get();
@@ -238,12 +250,10 @@ void singleStudent(int s)
         cout<<"\n";
         cout<<"\tSTUDENT FULL NAME : "<<him.name<<endl;
         cout<<"\tSTUDENT ID NUMBER :0/ "<<him.id<<endl;
-        cout<<"\tSTUDENT Key NUMBER :"<<him.key<<endl;
+        cout<<"\tSTUDENT KEY NUMBER :"<<him.key<<endl;
         cout<<"\tSEMASTER 1 MARK : "<<him.sem1<<endl;
         cout<<"\tSEMASTER 2 MARK : "<<him.sem2<<endl;
         cout<<"\tSEMASTER 3 MARK : "<<him.sem3<<endl;
-        cout<<"\tSUM : "<<him.sum<<endl<<endl;
-        cout<<"\tFINAL RESELT : "<<him.reselt<<endl;
         cout<<"\n";
         cout<<"=================================================================================="<<endl;
         equality=true;
@@ -251,7 +261,8 @@ void singleStudent(int s)
     }
         infile.close();
         if(equality==false)
-            cout<<"\t\t\t\tRECORD NOT FOUND..."<<endl;
+            cout<<"\n"; 
+            cout<<"\t\t\t\tINFORMATION NOT FOUND..."<<endl;
             cout<<endl;
             cout<<"press any key to continue...";
             cin.ignore();
@@ -293,7 +304,7 @@ void updateInfo(int x)
     cout<<"ENTER YOUR ID NUMBER : 0/";
     cin.ignore();
     cin.get(him.id,80);
-    cout<<"ENTER YOUR Key NUMBER :";
+    cout<<"ENTER YOUR KEY NUMBER :";
     cin>>him.key;
     cout<<"ENTER YOUR SEMASTER 1 MARK : ";
     cin>>him.sem1;
@@ -301,8 +312,7 @@ void updateInfo(int x)
     cin>>him.sem2;
     cout<<"ENTER YOUR SEMASTER 3 MARK : ";
     cin>>him.sem3;
-    him.sum=him.sem1+him.sem2+him.sem3;
-    him.reselt=(him.sum/3);
+    him.sumCalcu();
     int pos=(-1)*static_cast<int>(sizeof(student));
     infile.seekp(pos,ios::cur);
     infile.write(reinterpret_cast<char *> (&him), sizeof(student));
@@ -314,7 +324,7 @@ void updateInfo(int x)
      }
      infile.close();
          if(checker==false)
-            cout<<"\t\t\t\tRECORD NOT FOUND"<<endl;
+            cout<<"\t\t\t\tINFORMATION NOT FOUND"<<endl;
             cout<<endl;
             cout<<"press any key to continue...";
             cin.ignore();
@@ -349,7 +359,8 @@ void result(int y)
         }else if(him.reselt < 20){
             cout<<"\t\tYOU HAVE PASSED"<<endl<<endl;
         }else{
-            cout<<"\t\tSOMETHING WRONG PLESSE GO CHECK YOU INFO......."<<endl;
+            cout<<"\t\tSOMETHING WRONG PLESSE GO CHECK YOUR INFO......."<<endl;
+            cout<<"\n";
             cout<<"press any key to continue...";
             cin.ignore();
             cin.get();
@@ -362,7 +373,7 @@ void result(int y)
     }
         infile.close();
         if(eq==false)
-            cout<<"\t\t\t\tRECORD NOT FOUND..."<<endl;
+            cout<<"\t\t\t\tINFORMATION NOT FOUND..."<<endl;
             cout<<endl;
             cout<<"press any key to continue...";
             cin.ignore();
