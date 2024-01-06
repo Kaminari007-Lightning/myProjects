@@ -24,7 +24,7 @@ struct student
 {
 char name[80];
 char id[80];
-int roll;
+int key;
 float sem1,sem2,sem3,sum,reselt;
 };
 
@@ -42,25 +42,25 @@ int main() {
     short int choice ;
     system("cls");
     system("color 0A");
-    Sleep(500);
+    Sleep(300);
     cout << "\n\n\n\t====================Student Academy Archive====================";
-    Sleep(500);
+    Sleep(300);
     cout << "\n\n\n\t1. add new student";
-    Sleep(500);
+    Sleep(300);
     cout << "\n\n\t2. show all students";
-    Sleep(500);
+    Sleep(300);
     cout << "\n\n\t3. show single students";
-    Sleep(500);
+    Sleep(300);
     cout << "\n\n\t4. edit student information";
-    Sleep(500);
+    Sleep(300);
     cout << "\n\n\t5. the results of the final";
-    Sleep(500);
+    Sleep(300);
     cout << "\n\n\t6. delete student information";
-    Sleep(500);
+    Sleep(300);
     cout << "\n\n\t7. exit";
-    Sleep(500);
+    Sleep(300);
     cout << "\n\n\t > ";
-    Sleep(500);
+    Sleep(300);
     cin >> choice;
 
     switch (choice)
@@ -73,25 +73,25 @@ int main() {
             break;
         case 3:
             int t;
-            cout<<"\n\tENTER YOUR ROLL NUMBER : ";
+            cout<<"\n\tENTER YOUR KEY NUMBER : ";
             cin>>t;
             singleStudent(t);
             break;
         case 4:
             int g;
-            cout<<"\n\tENTER YOUR ROLL NUMBER : ";
+            cout<<"\n\tENTER YOUR KEY NUMBER : ";
             cin>>g;
             updateInfo(g);
             break;
         case 5:
             int j;
-            cout<<"\n\tENTER YOUR ROLL NUMBER : ";
+            cout<<"\n\tENTER YOUR KEY NUMBER : ";
             cin>>j;
             result(j);
             break;
         case 6:
             int h;
-            cout<<"\n\tENTER YOUR ROLL NUMBER : ";
+            cout<<"\n\tENTER YOUR KEY NUMBER : ";
             cin>>h;
             deleteStudent(h);
             break;
@@ -155,8 +155,8 @@ void addStudent()
     cout<<"\n\tENTER YOUR ID NUMBER : 0/ ";
     cin.ignore();
     cin.get(him.id,80);
-    cout<<"\n\tENTER YOUR ROLL NUMBER : ";
-    cin>>him.roll;
+    cout<<"\n\tENTER YOUR KEY NUMBER : ";
+    cin>>him.key;
     cout<<"\n\tENTER YOUR SEMASTER 1 MARK : ";
     cin>>him.sem1;
     cout<<"\n\tENTER YOUR SEMASTER 2 MARK : ";
@@ -197,7 +197,7 @@ void showAll()
     {
         cout<<"\tSTUDENT FULL NAME : "<<him.name<<endl;
         cout<<"\tSTUDENT ID NUMBER :0/ "<<him.id<<endl;
-        cout<<"\tSTUDENT ROLL NUMBER : "<<him.roll<<endl;
+        cout<<"\tSTUDENT Key NUMBER : "<<him.key<<endl;
         cout<<"\tSEMASTER 1 MARK : "<<him.sem1<<endl;
         cout<<"\tSEMASTER 2 MARK : "<<him.sem2<<endl;
         cout<<"\tSEMASTER 3 MARK : "<<him.sem3<<endl;
@@ -233,12 +233,12 @@ void singleStudent(int s)
     cout<<"=========================VIEW A SINGLE STUDENT INFORMATION========================\n";
     while(infile.read(reinterpret_cast<char*>(&him),sizeof(student)))
     {
-        if(him.roll == s)
+        if(him.key == s)
         {
         cout<<"\n";
         cout<<"\tSTUDENT FULL NAME : "<<him.name<<endl;
         cout<<"\tSTUDENT ID NUMBER :0/ "<<him.id<<endl;
-        cout<<"\tSTUDENT ROLL NUMBER :"<<him.roll<<endl;
+        cout<<"\tSTUDENT Key NUMBER :"<<him.key<<endl;
         cout<<"\tSEMASTER 1 MARK : "<<him.sem1<<endl;
         cout<<"\tSEMASTER 2 MARK : "<<him.sem2<<endl;
         cout<<"\tSEMASTER 3 MARK : "<<him.sem3<<endl;
@@ -277,11 +277,11 @@ void updateInfo(int x)
      {
      infile.read(reinterpret_cast<char*>(&him),sizeof(student));
      {
-         if(him.roll==x)
+         if(him.key==x)
          {
         cout<<"\t\t\t\tSTUDENT FULL NAME : "<<him.name<<endl;
         cout<<"\t\t\t\tSTUDENT ID NUMBER :0/ "<<him.id<<endl;
-        cout<<"\t\t\t\tSTUDENT ROLL NUMBER :"<<him.roll<<endl;
+        cout<<"\t\t\t\tSTUDENT Key NUMBER :"<<him.key<<endl;
         cout<<"\t\t\t\tSEMASTER 1 MARK : "<<him.sem1<<endl;
         cout<<"\t\t\t\tSEMASTER 2 MARK : "<<him.sem2<<endl;
         cout<<"\t\t\t\tSEMASTER 3 MARK : "<<him.sem3<<endl<<endl<<endl;
@@ -293,8 +293,8 @@ void updateInfo(int x)
     cout<<"ENTER YOUR ID NUMBER : 0/";
     cin.ignore();
     cin.get(him.id,80);
-    cout<<"ENTER YOUR ROLL NUMBER :";
-    cin>>him.roll;
+    cout<<"ENTER YOUR Key NUMBER :";
+    cin>>him.key;
     cout<<"ENTER YOUR SEMASTER 1 MARK : ";
     cin>>him.sem1;
     cout<<"ENTER YOUR SEMASTER 2 MARK : ";
@@ -338,7 +338,7 @@ void result(int y)
     cout<<"\t===========VIEW A SINGLE STUDENT RESULT==========\n\n";
     while(infile.read(reinterpret_cast<char*>(&him),sizeof(student)))
     {
-        if(him.roll==y)
+        if(him.key==y)
         {
         cout<<"\t\tSTUDENT FULL NAME : "<<him.name<<endl;
         cout<<"\t\tSTUDENT ID NUMBER : 0/"<<him.id<<endl<<endl;
@@ -347,7 +347,7 @@ void result(int y)
         if(him.reselt <= 10){
             cout<<"\t\tYOU HAVE FAILED"<<endl<<endl;
         }else if(him.reselt < 20){
-            cout<<"\t\tYOU HAVE SUCCESSED"<<endl<<endl;
+            cout<<"\t\tYOU HAVE PASSED"<<endl<<endl;
         }else{
             cout<<"\t\tSOMETHING WRONG PLESSE GO CHECK YOU INFO......."<<endl;
             cout<<"press any key to continue...";
@@ -372,12 +372,42 @@ void result(int y)
 
 void deleteStudent(int w)
 {
-
+    system("cls");
+    student him;
+    ifstream infile;
+    infile.open("Students.txt",ios::binary);
+    if(!infile)
+    {
+        cout<<"THE FILE COULD NOT BE OPENED..."<<endl;
+        cin.ignore();
+        cin.get();
+    }
+    ofstream outfile;
+    outfile.open("Record.txt",ios::binary);
+    infile.seekg(0,ios::beg);
+    cout<<"\t\t\t\t===========DELETE A STUDENT INFO==========\n\n";
+    while(infile.read(reinterpret_cast<char*>(&him),sizeof(student)))
+    {
+        if(him.key!=w)
+        {
+             outfile.write(reinterpret_cast<char*>(&him),sizeof(student));
+        }
+    }
+    infile.close();
+    outfile.close();
+    remove("Students.txt");
+    rename("Record.txt","Students.txt");
+    cout<<endl;
+    cout<<"\t\t\t\tINFORMATION SUCCESSFULLY DELETED"<<endl;
+    cout<<"press any key to continue...";
+    cin.ignore();
+    cin.get();
+    main();
 }
 
 void self_exit()
 {
-    cout << "\n\n\n\t\tThank You For Using this Software !";
+    cout << "\n\n\n\t\tThank You For Using My Software !";
     cout << "\n\t";
     exit(1);
 }
