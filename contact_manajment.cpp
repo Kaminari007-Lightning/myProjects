@@ -52,7 +52,7 @@ int main()
 void self_exit()
 {
     system("cls");
-    cout << "\n\n\n\t\tThank You For Using !";
+    cout << "\n\n\n\t\tThank You For Using !"<<  endl;
     exit(1);
 }
 
@@ -81,9 +81,9 @@ void addContact()
         {
             if(Phone.is_open())
             {
-                Phone << first_name << " " << last_name << " " << phone_number << endl;
+                Phone << first_name << "\t" << last_name << "\t\t" << phone_number << endl;
                 Phone.close();
-                cout << "\n\n\tContact Added Successfully!";
+                cout << "\n\n\tContact Added Successfully!" << endl;
                 cout << "\n\tPress Any Key To Continue..";
                 getch();
                 main();
@@ -168,6 +168,7 @@ void printContacts()
     ifstream myFile("number.txt");
     while(getline(myFile, mytext))
     {
+        cout <<"\t\tfirst:\tlast:\tphone:" << endl<<endl;
         cout <<"\t\t" << mytext << endl;
     } 
     cout << "\n\tPress Any Key To Continue..";
