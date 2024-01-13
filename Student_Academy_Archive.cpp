@@ -4,23 +4,25 @@
 #include <windows.h>
 #include <fstream>
 #include <unistd.h>
+#include <list>
+#include <vector>
 using namespace std;
-class student{
+#define FILE_PATH_BIN "Students.bin"
+#define FILE_PATH_RECORD "Record.bin"
+class Student{
     public:
-    char name[80];
+    string name;
     string sex;
     int id;
     int lvl;
     float sem1,sem2,sem3,sum,reselt;
-    int count = 0;
     void sumCalcu(){
         sum=sem1+sem2+sem3;
         reselt=(sum/3);
     }
 };
 void intro();
-void addStudent();
-void showAll();
+void addStudent(Student student, string filePath);
 void singleStudent(int);
 void updateInfo(int);
 void result(int);
@@ -28,42 +30,67 @@ void deleteStudent(int);
 void self_exit();
 void MainMenu();
 int main() {
-    intro();
+    // intro();
     MainMenu();
 }
-void intro()
-{
-    system("color 0C");
-    cout << "\n\n\n";
-    Sleep(300);
-    cout << "\t\t\t * * *  **** *      ****  ***   ***   ****   " << endl;
-    Sleep(300);
-    system("color 0a");
-    cout << "\t\t\t * * * *     *     *     *   * * * * *        "<< endl;
-    Sleep(300);
-    system("color 0b");
-    cout << "\t\t\t * * * ***** *     *     *   * * * * *****    " << endl;
-    Sleep(300);
-    system("color 0e");
-    cout << "\t\t\t * * * *     *     *     *   * * * * *         " << endl;
-    Sleep(300);
-    system("color 05");
-    cout << "\t\t\t  ***   **** *****  ****  ***  * * *  ****     " << endl;
-    Sleep(300);
-    system("color 0C");
-    cout<<endl;
-    cout<<"\t\t\t============================================="<<endl;
-    Sleep(300);
-    system("color 0b");
-    cout<<"\t\t\t       THIS IS STUDENT ACADEMY ARCHIVE"<<endl;
-    Sleep(300);
-    system("color 0e");
-    cout<<"\t\t\t============================================="<<endl;
-    Sleep(300);
-    system("color 0A");
-    cout<<"\npress any key to continue...";
-    cin.ignore();
-    cin.get();
+// void intro()
+// {
+//     system("color 0C");
+//     cout << "\n\n\n";
+//     Sleep(300);
+//     cout << "\t\t\t * * *  **** *      ****  ***   ***   ****   " << endl;
+//     Sleep(300);
+//     system("color 0a");
+//     cout << "\t\t\t * * * *     *     *     *   * * * * *        "<< endl;
+//     Sleep(300);
+//     system("color 0b");
+//     cout << "\t\t\t * * * ***** *     *     *   * * * * *****    " << endl;
+//     Sleep(300);
+//     system("color 0e");
+//     cout << "\t\t\t * * * *     *     *     *   * * * * *         " << endl;
+//     Sleep(300);
+//     system("color 05");
+//     cout << "\t\t\t  ***   **** *****  ****  ***  * * *  ****     " << endl;
+//     Sleep(300);
+//     system("color 0C");
+//     cout<<endl;
+//     cout<<"\t\t\t============================================="<<endl;
+//     Sleep(300);
+//     system("color 0b");
+//     cout<<"\t\t\t       THIS IS STUDENT ACADEMY ARCHIVE"<<endl;
+//     Sleep(300);
+//     system("color 0e");
+//     cout<<"\t\t\t============================================="<<endl;
+//     Sleep(300);
+//     system("color 0A");
+//     cout<<"\npress any key to continue...";
+//     cin.ignore();
+//     cin.get();
+// }
+
+vector<Student*> readbinfile(string filePath){
+    vector<Student*> fileStudent;
+    ifstream myfile(filePath, ios::in | ios::binary | ios::ate);
+    if (myfile.is_open()){
+        streampos size = myfile.tellg();
+        char* memblock = new char[size];
+        myfile.seekg(0, ios::beg);
+        myfile.read(memblock, size);
+        myfile.close(); 
+
+        long long byteIndex = 0;
+        while(byteIndex < size){
+            Student* student = (Student*)(memblock + byteIndex);
+            fileStudent.push_back(student);
+            byteIndex += sizeof(Student);
+        }
+    }else{
+        cout << "UNABLE TO OPEN FILE !!!" << endl;
+        cin.ignore();
+        cin.get();
+        MainMenu();
+    }
+    return fileStudent;
 }
 
 void MainMenu(){
@@ -90,85 +117,99 @@ void MainMenu(){
     cout << "\n\n\t > ";
     Sleep(300);
     cin >> choice;
-    switch (choice)
-    {
-        case 1:
-            addStudent();
-            break;
-        case 2:
-            showAll();
-            break;
-        case 3:
-            int t;
-            cout<<"\n\tEnter Your ID Number To Be Search : #";
-            cin>>t;
-            singleStudent(t);
-            break;
-        case 4:
-            int g;
-            cout<<"\n\tEnter Your ID Number To Be Search : #";
-            cin>>g;
-            updateInfo(g);
-            break;
-        case 5:
-            int j;
-            cout<<"\n\tEnter Your ID Number To Be Search : #";
-            cin>>j;
-            result(j);
-            break;
-        case 6:
-            int h;
-            cout<<"\n\tEnter Your ID Number To Be Search : #";
-            cin>>h;
-            deleteStudent(h);
-            break;
-        case 7:
-            self_exit();
-            break;
-        default:
-            cout<<"\n\tERROR";
-            sleep(1);
-            main();
-            break;
+    if (choice == 1) {
+        Student him;
+        cout<<"\n\n";
+        cout<<"\t=============== CREATE A NEW INFO ================\n";
+            cout<<"\n\tEnter Your ID Number : #";
+            cin>>him.id;
+            if(him.id > 9999){cout<<"\n\tChoose A Number Dont Surpass \"9999\" ";addStudent(him, FILE_PATH_BIN);}
+            cout<<"\n\tEnter Your Full Name : ";
+            cin.ignore();
+            getline(cin, him.name);
+            cout<<"\n\tEnter Your Sex : ";
+            cin>>him.sex;
+            if(him.sex == "male"){}else if(him.sex == "female"){}else{cout<<"\n\tPlease Be Realistic Whoever You Are";addStudent(him, FILE_PATH_BIN);} 
+            cout<<"\n\tEnter Your Year Level : ";
+            cin>>him.lvl;
+            if(him.lvl > 5){cout<<"\n\twhere Are You Going To. There 5 Levels In University ";sleep(5);addStudent(him, FILE_PATH_BIN);}
+            cout<<"\n\tEnter Your Semaster 1 Mark : ";
+            cin>>him.sem1;
+            cout<<"\n\tEnter Your Semaster 2 MARK : ";
+            cin>>him.sem2;
+            cout<<"\n\tEnter Your Semaster 3 MARK : ";
+            cin>>him.sem3;
+            him.sumCalcu();
+            addStudent(him, FILE_PATH_BIN);
+    }else if(choice == 2){
+        Student him;
+        cout<<"\n\n";
+        cout<<"\t\t\t- ALL STUDENTS INFORMATION -"<<endl;
+        cout<<"=================================================================================="<<endl;
+        cout<<"\n";
+        vector<Student*> filelines = readbinfile(FILE_PATH_BIN);
+        bool check=false;
+        for(auto line = filelines.begin(); line != filelines.end(); line++){
+            Student* student = *line;
+            cout<<"\tStudent ID Number : #"<<him.id<<endl;
+            cout<<"\tStudent Full Name : "<<him.name<<endl;
+            cout<<"\tStudent Sex : "<<him.sex<<endl;
+            cout<<"\tStudent Year Level : "<<him.lvl<<endl;
+            cout<<"\tSemaster 1 Mark : "<<him.sem1<<endl;
+            cout<<"\tSemaster 2 Mark : "<<him.sem2<<endl;
+            cout<<"\tSemaster 3 Mark : "<<him.sem3<<endl;
+            cout<<"\n";
+            cout<<"=================================================================================="<<endl;
+            cout<<"\n";
+            check=true;
+        }
+        if(check==false){
+        cout<<"\t\t\t\tNO INFORMATION FOUND..."<<endl<<endl;
+        cout<<"press any key to continue....";
+        cin.ignore();
+        cin.get();
+        MainMenu();
+        }
+        cout<<"press any key to continue....";
+        cin.ignore();
+        cin.get();
+        MainMenu();
+    }else if(choice == 3){
+        int t;
+        cout<<"\n\tEnter Your ID Number To Be Search : #";
+        cin>>t;
+        singleStudent(t);
+    }else if(choice == 4){
+        int g;
+        cout<<"\n\tEnter Your ID Number To Be Search : #";
+        cin>>g;
+        updateInfo(g);
+    }else if(choice == 5){
+        int j;
+        cout<<"\n\tEnter Your ID Number To Be Search : #";
+        cin>>j;
+        result(j);
+    }else if(choice == 6){
+        int h;
+        cout<<"\n\tEnter Your ID Number To Be Search : #";
+        cin>>h;
+        deleteStudent(h);
+    }else if(choice == 7){
+        self_exit();
+    }else{
+        cout<<"\n\tERROR";
+        sleep(1);
+        main();
     }
 }
 
-void addStudent()
+void addStudent(Student student, string filePath)
 {
     system("cls");
-    student him;
-    ofstream outfile;
-    outfile.open("Students.txt",ios::app|ios::binary);
-    if(outfile.fail())
-    {
-        cout<<"THE FILE COULD NOT BE OPEN...press enter key";
-        cin.ignore();
-        cin.get();
-    }
-    cout<<"\n\n";
-    cout<<"\t=============== CREATE A NEW INFO ================\n";
-    cout<<"\n\tEnter Your ID Number : #";
-    cin>>him.id;
-    if(him.id > 9999){cout<<"\n\tChoose A Number Dont Surpass \"9999\" ";sleep(5);addStudent();}
-    cout<<"conter: "<<him.count;
-    cout<<"\n\tEnter Your Full Name : ";
-    cin.ignore();
-    cin.getline(him.name,80);
-    cout<<"\n\tEnter Your Sex : ";
-    cin>>him.sex;
-    if(him.sex == "male"){}else if(him.sex == "female"){}else{cout<<"\n\tPlease Be Realistic Whoever You Are";sleep(5);addStudent();} 
-    cout<<"\n\tEnter Your Year Level : ";
-    cin>>him.lvl;
-    if(him.lvl > 5){cout<<"\n\twhere Are You Going To. There 5 Levels In University ";sleep(5);addStudent();}
-    cout<<"\n\tEnter Your Semaster 1 Mark : ";
-    cin>>him.sem1;
-    cout<<"\n\tEnter Your Semaster 2 MARK : ";
-    cin>>him.sem2;
-    cout<<"\n\tEnter Your Semaster 3 MARK : ";
-    cin>>him.sem3;
-    him.sumCalcu();
-    outfile.write(reinterpret_cast<char *> (&him), sizeof(student));
-    outfile.close();
+    ofstream myfile;
+    myfile.open(filePath , ios::out | ios::app | ios::binary);
+    myfile.write((char*)&student,sizeof(student));
+    myfile.close();
     cout<<"\n\t=================================================="<<endl;
     cout<<endl;
     cout<<"\t\tTHE FILE IS SUCCESSFULLY SAVED"<<endl;
@@ -179,52 +220,12 @@ void addStudent()
     MainMenu();
 }
 
-void showAll()
-{
-    system("cls");
-    student him;
-    ifstream infile;
-    bool check=false;
-    infile.open("Students.txt",ios::app|ios::binary);
-    if(infile.fail())
-    {
-        cout<<"THE FILE COULD NOT BE OPENED.....press enter key...";
-        cin.ignore();
-        cin.get();
-    }
-     cout<<"\n\n";
-     cout<<"\t\t\t- ALL STUDENTS INFORMATION -"<<endl;
-     cout<<"=================================================================================="<<endl;
-     cout<<"\n";
-    while(infile.read(reinterpret_cast<char*>(&him),sizeof(student)))
-    {
-        cout<<"\tStudent ID Number : #"<<him.id<<endl;
-        cout<<"\tStudent Full Name : "<<him.name<<endl;
-        cout<<"\tStudent Sex : "<<him.sex<<endl;
-        cout<<"\tStudent Year Level : "<<him.lvl<<endl;
-        cout<<"\tSemaster 1 Mark : "<<him.sem1<<endl;
-        cout<<"\tSemaster 2 Mark : "<<him.sem2<<endl;
-        cout<<"\tSemaster 3 Mark : "<<him.sem3<<endl;
-        cout<<"\n";
-        cout<<"=================================================================================="<<endl;
-        cout<<"\n";
-        check=true;
-    }
-    infile.close();
-    if(check==false)
-    cout<<"\t\t\t\tNO INFORMATION FOUND..."<<endl<<endl;
-    cout<<"press any key to continue....";
-    cin.ignore();
-    cin.get();
-    MainMenu();
-}
-
 void singleStudent(int s)
 {
     system("cls");
-    student him;
+    Student him;
     ifstream infile;
-    infile.open("Students.txt",ios::app|ios::binary);
+    infile.open(FILE_PATH_BIN,ios::app|ios::binary);
     if(infile.fail())
     {
         cout<<"THE FILE COULD NOT BE OPENED...";
@@ -233,7 +234,7 @@ void singleStudent(int s)
     }
     bool equality=false;
     cout<<"=========================VIEW A SINGLE STUDENT INFORMATION========================\n";
-    while(infile.read(reinterpret_cast<char*>(&him),sizeof(student)))
+    while(infile.read(reinterpret_cast<char*>(&him),sizeof(Student)))
     {
         if(him.id == s)
         {
@@ -264,9 +265,9 @@ void singleStudent(int s)
 void updateInfo(int x)
 {
     system("cls");
-    student him;
+    Student him;
     fstream infile;
-    infile.open("Students.txt",ios::binary|ios::in|ios::out);
+    infile.open(FILE_PATH_BIN,ios::binary|ios::in|ios::out);
     if(infile.fail())
     {
         cout<<"THE FILE COULD NOT BE OPENED..."<<endl;
@@ -277,7 +278,7 @@ void updateInfo(int x)
      cout<<"\t\t============== MODIFY A STUDENT INFORMATION ==============\n\n";
      while(!infile.eof() && checker==false)
      {
-     infile.read(reinterpret_cast<char*>(&him),sizeof(student));
+     infile.read(reinterpret_cast<char*>(&him),sizeof(Student));
      {
         if(him.id==x)
         {
@@ -299,22 +300,22 @@ void updateInfo(int x)
         case 1:
             cout<<"Enter Your New ID Number : #";
             cin>>him.id; 
-            if(him.id > 9999){cout<<"\n\tChoose A Number Dont Surpass \"9999\" ";sleep(5);addStudent();}
+            if(him.id > 9999){cout<<"\n\tChoose A Number Dont Surpass \"9999\" ";sleep(5);addStudent(him, FILE_PATH_BIN);}
             break;
         case 2:
             cout<<"Enter Your Full Name : ";
             cin.ignore();
-            cin.getline(him.name,80);
+            getline(cin, him.name);
             break;
         case 3:
             cout<<"Enter Your Sex : ";
             cin>>him.sex;  
-            if(him.sex == "male"){}else if(him.sex == "female"){}else{cout<<"\n\tPlease Be Realistic Whoever You Are";sleep(5);addStudent();} 
+            if(him.sex == "male"){}else if(him.sex == "female"){}else{cout<<"\n\tPlease Be Realistic Whoever You Are";sleep(5);addStudent(him, FILE_PATH_BIN);} 
             break;
         case 4:
             cout<<"Enter Your Year Level : ";
             cin>>him.lvl;
-            if(him.lvl > 5){cout<<"\n\twhere Are You Going To. There 5 Levels In University ";sleep(5);addStudent();}
+            if(him.lvl > 5){cout<<"\n\twhere Are You Going To. There 5 Levels In University ";sleep(5);addStudent(him, FILE_PATH_BIN);}
             break;
         case 5:
             cout<<"Enter Your Semaster 1 Mark : ";
@@ -334,9 +335,9 @@ void updateInfo(int x)
             break;
         }
     him.sumCalcu(); 
-    int pos=(-1)*static_cast<int>(sizeof(student));
+    int pos=(-1)*static_cast<int>(sizeof(Student));
     infile.seekp(pos,ios::cur);
-    infile.write(reinterpret_cast<char *> (&him), sizeof(student));
+    infile.write(reinterpret_cast<char *> (&him), sizeof(Student));
     cout<<"==================================================="<<endl<<endl;
     cout<<"\t\tThe File Is Successfully Updated"<<endl;
     checker=true;
@@ -356,9 +357,9 @@ void updateInfo(int x)
 void result(int y)
 {
     system("cls");
-    student him;
+    Student him;
     ifstream infile;
-    infile.open("Students.txt",ios::app|ios::binary);
+    infile.open(FILE_PATH_BIN,ios::app|ios::binary);
     if(infile.fail())
     {
         cout<<"THE FILE COULD NOT BE OPENED..."<<endl;
@@ -367,7 +368,7 @@ void result(int y)
     }
     bool eq=false;
     cout<<"\t===========VIEW A SINGLE STUDENT RESULT==========\n\n";
-    while(infile.read(reinterpret_cast<char*>(&him),sizeof(student)))
+    while(infile.read(reinterpret_cast<char*>(&him),sizeof(Student)))
     {
         if(him.id==y)
         {
@@ -406,9 +407,9 @@ void result(int y)
 void deleteStudent(int w)
 {
     system("cls");
-    student him;
+    Student him;
     ifstream infile;
-    infile.open("Students.txt",ios::binary);
+    infile.open(FILE_PATH_BIN,ios::binary);
     if(!infile)
     {
         cout<<"THE FILE COULD NOT BE OPENED..."<<endl;
@@ -416,20 +417,20 @@ void deleteStudent(int w)
         cin.get();
     }
     ofstream outfile;
-    outfile.open("Record.txt",ios::binary);
+    outfile.open(FILE_PATH_RECORD,ios::binary);
     infile.seekg(0,ios::beg);
     cout<<"\t\t\t\t===========DELETE A STUDENT INFO==========\n\n";
-    while(infile.read(reinterpret_cast<char*>(&him),sizeof(student)))
+    while(infile.read(reinterpret_cast<char*>(&him),sizeof(Student)))
     {
         if(him.id!=w)
         {
-            outfile.write(reinterpret_cast<char*>(&him),sizeof(student));
+            outfile.write(reinterpret_cast<char*>(&him),sizeof(Student));
         }
     }
     infile.close();
     outfile.close();
-    remove("Students.txt");
-    rename("Record.txt","Students.txt");
+    remove(FILE_PATH_BIN);
+    rename(FILE_PATH_RECORD,FILE_PATH_BIN);
     cout<<endl;
     cout<<"\t\t\t\tINFORMATION SUCCESSFULLY DELETED"<<endl;
     cout<<"press any key to continue...";

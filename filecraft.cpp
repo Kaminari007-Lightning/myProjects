@@ -13,11 +13,11 @@ typedef struct {
     string name;
     double value;
     string level; 
-} Students;
+} Student;
 
 int main();
 
-void addtobin(Students student, string filePath){
+void addtobin(Student student, string filePath){
     ofstream myfile;
     myfile.open(filePath , ios::out | ios::app | ios::binary);
     myfile.write((char*)&student,sizeof(student));
@@ -25,20 +25,29 @@ void addtobin(Students student, string filePath){
     cout << "--> your text is added to the file !!! <--"<< endl;    
 }
 
-/* list<string> readbinfile(string filePath){
-    list<string> filelines;
+list<Student*> readbinfile(string filePath){
+    list<Student*> filelines;
     string line;
-    ifstream myfile(filePath);
+    ifstream myfile(filePath, ios::binary | ios::ate);
     if (myfile.is_open()){
-        while(getline(myfile, line)){
-            filelines.push_back(line);
+        streampos size = myfile.tellg();
+        char* block = new char[size];
+        myfile.seekg(0, ios::beg);
+        myfile.read(block, size);
+        myfile.close();
+
+        long long biteIndex = 0;
+        while(biteIndex < size){
+            Student* student = (Student*)(block + biteIndex);
+            filelines.push_back(student);
+            biteIndex += sizeof(Student);
         }
     }else{
         cout << "unable to open file " << endl;
         exit(1);
     }
     return filelines;
-} */
+}
 
 void addtotextbin(){
     string text;
@@ -47,7 +56,7 @@ void addtotextbin(){
         cout << "\n1. write to file\n2. read from file\n3. exit\n\n>>  ";
         cin >> option;
         if (option == (int)options::add){
-            Students student;
+            Student student;
            
             cout << "enter name:\n>>  ";
             cin >> ws;
@@ -60,12 +69,17 @@ void addtotextbin(){
             cin >> student.value;
 
             addtobin(student , STRING_BIN);
-        /* }else if (option == (int)options::view){
+        }else if (option == (int)options::view){
             cout << "-->========= files content =========<--"<< endl;
-            list<string> filelines = readbinfile(STRING_BIN);
+            list<Student*> filelines = readbinfile(STRING_BIN);
             for(auto line = filelines.begin(); line != filelines.end(); line++){
-            cout << *line << endl;
-        } */
+                Student* student = *line;
+                cout << "Student name: " << student->name << endl;
+                cout << "Student level: " << student->level << endl;
+                cout << "Student value: " << student->value << endl;
+                cout <<"\n--------------------\n"; 
+
+        }
         }else {
             cout << "\t\t======== thank you for using this program ========\n" << endl;
             break;
