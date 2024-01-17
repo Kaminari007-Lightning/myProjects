@@ -5,6 +5,7 @@
 #include <fstream>
 #include <unistd.h>
 #include <list>
+#include <string>
 using namespace std;
 #define FILE_PATH_BIN "Students.txt"
 #define FILE_PATH_RECORD "Record.txt"
