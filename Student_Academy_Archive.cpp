@@ -5,7 +5,6 @@
 #include <fstream>
 #include <unistd.h>
 #include <list>
-#include <vector>
 using namespace std;
 #define FILE_PATH_BIN "Students.bin"
 #define FILE_PATH_RECORD "Record.bin"
@@ -22,7 +21,7 @@ class Student{
     }
 };
 void intro();
-void addStudent(Student student, string filePath);
+void addStudent(Student him, string filePath);
 void singleStudent(int);
 void updateInfo(int);
 void result(int);
@@ -68,8 +67,8 @@ int main() {
 //     cin.get();
 // }
 
-vector<Student*> readbinfile(string filePath){
-    vector<Student*> fileStudent;
+list<Student*> readbinfile(string filePath){
+    list<Student*> fileStudent;
     ifstream myfile(filePath, ios::in | ios::binary | ios::ate);
     if (myfile.is_open()){
         streampos size = myfile.tellg();
@@ -142,22 +141,21 @@ void MainMenu(){
             him.sumCalcu();
             addStudent(him, FILE_PATH_BIN);
     }else if(choice == 2){
-        Student him;
         cout<<"\n\n";
         cout<<"\t\t\t- ALL STUDENTS INFORMATION -"<<endl;
         cout<<"=================================================================================="<<endl;
         cout<<"\n";
-        vector<Student*> filelines = readbinfile(FILE_PATH_BIN);
+        list<Student*> filelines = readbinfile(FILE_PATH_BIN);
         bool check=false;
         for(auto line = filelines.begin(); line != filelines.end(); line++){
             Student* student = *line;
-            cout<<"\tStudent ID Number : #"<<him.id<<endl;
-            cout<<"\tStudent Full Name : "<<him.name<<endl;
-            cout<<"\tStudent Sex : "<<him.sex<<endl;
-            cout<<"\tStudent Year Level : "<<him.lvl<<endl;
-            cout<<"\tSemaster 1 Mark : "<<him.sem1<<endl;
-            cout<<"\tSemaster 2 Mark : "<<him.sem2<<endl;
-            cout<<"\tSemaster 3 Mark : "<<him.sem3<<endl;
+            cout<<"\tStudent ID Number : #"<<student->id<<endl;
+            cout<<"\tStudent Full Name : "<<student->name<<endl;
+            cout<<"\tStudent Sex : "<<student->sex<<endl;
+            cout<<"\tStudent Year Level : "<<student->lvl<<endl;
+            cout<<"\tSemaster 1 Mark : "<<student->sem1<<endl;
+            cout<<"\tSemaster 2 Mark : "<<student->sem2<<endl;
+            cout<<"\tSemaster 3 Mark : "<<student->sem3<<endl;
             cout<<"\n";
             cout<<"=================================================================================="<<endl;
             cout<<"\n";
@@ -203,12 +201,12 @@ void MainMenu(){
     }
 }
 
-void addStudent(Student student, string filePath)
+void addStudent(Student him, string filePath)
 {
     system("cls");
     ofstream myfile;
     myfile.open(filePath , ios::out | ios::app | ios::binary);
-    myfile.write((char*)&student,sizeof(student));
+    myfile.write((char*)&him,sizeof(him));
     myfile.close();
     cout<<"\n\t=================================================="<<endl;
     cout<<endl;
