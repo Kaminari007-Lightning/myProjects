@@ -123,9 +123,6 @@ void MainMenu(){
         Student him;
         cout<<"\n\n";
         cout<<"\t=============== CREATE A NEW INFO ================\n";
-            cout<<"\n\tEnter Your ID Number : #";
-            cin>>him.id;
-            if(him.id > 9999){cout<<"\n\tChoose A Number Dont Surpass \"9999\" ";sleep(5);MainMenu();}
             cout<<"\n\tEnter Your Full Name : ";
             cin.ignore();
             getline(cin, him.name);
@@ -141,6 +138,8 @@ void MainMenu(){
             cin>>him.sem2;
             cout<<"\n\tEnter Your Semaster 3 MARK : ";
             cin>>him.sem3;
+            srand(time(0));
+            him.id = rand() % 10000;
             him.sumCalcu();
             addStudent(him, FILE_PATH_BIN);
     }else if(choice == 2){
@@ -149,7 +148,7 @@ void MainMenu(){
         cout<<"=================================================================================="<<endl;
         cout<<"\n";
         list<Student*> filelines = readbinfile(FILE_PATH_BIN);
-        bool check=false;
+        bool check;
         for(auto line = filelines.begin(); line != filelines.end(); line++){
             Student* student = *line;
             cout<<"\tStudent ID Number : #"<<student->id<<endl;
